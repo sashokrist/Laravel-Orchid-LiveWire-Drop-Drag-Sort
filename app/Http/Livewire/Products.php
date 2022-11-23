@@ -5,18 +5,22 @@ namespace App\Http\Livewire;
 use App\Models\Product;
 use League\CommonMark\Extension\TableOfContents\Normalizer\AsIsNormalizerStrategy;
 use Livewire\Component;
+use Orchid\Support\Facades\Alert;
 
 class Products extends Component
 {
-
-    public Product $product;
-    public function updateTaskOrder($products)
+    public function reorder($orderIds)
     {
-       // dd($products);
+      // dd($orderIds);
+//        Product::whereIn("id", $orderIds)
+//            ->update([
+//                'order_position' => array_values($orderIds),
+//            ]);
+        $products = Product::find($orderIds);
         foreach ($products as $product) {
-            Product::find($product['value'])->update(['order_position' => $product['order']]);
-           // dd('sort was successful');
+           $product->update(['order_position' => $product->order_position]);
         }
+
     }
     public function render()
     {
