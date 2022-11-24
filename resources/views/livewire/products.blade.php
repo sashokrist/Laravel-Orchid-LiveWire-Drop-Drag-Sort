@@ -11,6 +11,13 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
+            <div>
+                @if (session()->has('message'))
+                    <div class="alert alert-success">
+                        {{ session('message') }}
+                    </div>
+                @endif
+            </div>
             <div class="card">
                 <div class="card-header">{{ __('Products') }}</div>
                     <div class="card-body">
@@ -19,9 +26,11 @@
                                 <div class="card">
                                     <div class="card-body">
                                     </div>
-                                    <ul drag-root class="list-group">
-                                        @foreach($products as $product)
-                                        <li drag-item="{{ $product->id }}" draggable="true" class="list-group-item">|||  {{ $product->name }}</li>
+                                    <ul wire:sortable="reorder" class="list-group">
+                                        @foreach ($products as $product)
+                                            <li wire:sortable.item="{{ $product->id }}" wire:key="product-{{ $product->id }}" class="list-group-item">
+                                                <h4 wire:sortable.handle>{{ $product->name }}</h4>
+                                            </li>
                                         @endforeach
                                     </ul>
                                 </div>
@@ -29,40 +38,52 @@
                         </div>
                     </div>
                     @livewireScripts
-{{--                    <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v0.x.x/dist/livewire-sortable.js"></script>--}}
-                <script>
-                    let root = document.querySelector('[drag-root]')
+                   <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v0.x.x/dist/livewire-sortable.js"></script>
+{{--                <script>--}}
+{{--                    let root = document.querySelector('[drag-root]')--}}
 
-                    root.querySelectorAll('[drag-item]').forEach(el => {
-                        el.addEventListener('dragstart', e => {
-                            e.target.setAttribute('dragging', true)
-                        })
-                        el.addEventListener('drop', e => {
-                            e.target.classList.remove('bg-blue-100')
-                            let draggingEl = root.querySelector('[dragging]')
-                            e.target.before(draggingEl)
-                            let component = window.livewire.find(
-                                e.target.closest('[wire\\:id]').getAttribute('wire:id')
-                            )
-                            let orderIds = Array.from(root.querySelectorAll('[drag-item]'))
-                                .map(itemEl => itemEl.getAttribute('drag-item'))
-                            component.call('reorder', orderIds)
-                        })
-                        el.addEventListener('dragenter', e => {
-                            e.target.classList.add('bg-yellow-100')
-                            e.preventDefault()
-                        })
-                        el.addEventListener('dragover', e => {
-                            e.preventDefault()
-                        })
-                        el.addEventListener('dragleave', e => {
-                            el.classList.remove('bg-blue-100')
-                        })
-                        el.addEventListener('dragend', e => {
-                            e.target.removeAttribute('dragging')
-                        })
-                    });
-                </script>
+{{--                    root.querySelectorAll('[drag-item]').forEach(el => {--}}
+{{--                        el.addEventListener('dragstart', e => {--}}
+{{--                            e.target.setAttribute('dragging', true)--}}
+{{--                            console.log('start')--}}
+{{--                        })--}}
+{{--                        el.addEventListener('drop', e => {--}}
+{{--                            e.target.classList.remove('bg-blue-100')--}}
+{{--                            console.log('drop')--}}
+
+{{--                            let draggingEl = root.querySelector('[dragging]')--}}
+{{--                            e.target.before(draggingEl)--}}
+{{--                            console.log(draggingEl)--}}
+
+{{--                            let component = window.livewire.find(--}}
+{{--                                e.target.closest('[wire\\:id]').getAttribute('wire:id')--}}
+{{--                            )--}}
+{{--                            console.log(component)--}}
+
+{{--                            let orderIds = Array.from(root.querySelectorAll('[drag-item]'))--}}
+{{--                                .map(itemEl => itemEl.getAttribute('wire:key'))--}}
+{{--                            console.log(orderIds)--}}
+
+{{--                            component.call('reorder', orderIds)--}}
+{{--                        })--}}
+{{--                        el.addEventListener('dragenter', e => {--}}
+{{--                            e.target.classList.add('bg-yellow-100')--}}
+{{--                            e.preventDefault()--}}
+{{--                            console.log('enter')--}}
+{{--                        })--}}
+{{--                        el.addEventListener('dragover', e => {--}}
+{{--                            e.preventDefault()--}}
+{{--                        })--}}
+{{--                        el.addEventListener('dragleave', e => {--}}
+{{--                            el.classList.remove('bg-blue-100')--}}
+{{--                            console.log('leave')--}}
+{{--                        })--}}
+{{--                        el.addEventListener('dragend', e => {--}}
+{{--                            e.target.removeAttribute('dragging')--}}
+{{--                            console.log('end')--}}
+{{--                        })--}}
+{{--                    });--}}
+{{--                </script>--}}
                 </div>
             </div>
         </div>

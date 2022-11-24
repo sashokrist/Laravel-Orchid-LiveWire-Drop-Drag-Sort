@@ -15,8 +15,7 @@
 
     <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
-
+    @livewireStyles
 </head>
 <body>
     <div id="app">
@@ -79,6 +78,8 @@
 
             @yield('content')
 
+            @livewireScripts
+             <script src="https://cdn.jsdelivr.net/gh/livewire/sortable@v0.x.x/dist/livewire-sortable.js"></script>
         </main>
     </div>
 </body>
